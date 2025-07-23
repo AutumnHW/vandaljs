@@ -36,4 +36,3 @@ for (const file of eventFiles) {
 }
 
 client.login(token);
-client.user.setActivity('activity', { type: ActivityType.Listening, name: "to Project Radio" });
