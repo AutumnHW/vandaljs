@@ -56,9 +56,9 @@ module.exports = {
     });
 
     player.on('error', error => {
-      //console.error(❌ Audio error: ${error.message});
+      console.error("your shit broken my g${error.message}");
     });
 
-    await interaction.reply("penis");
+    await interaction.reply("playing hopefully");
   }
 };
