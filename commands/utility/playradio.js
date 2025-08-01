@@ -4,11 +4,11 @@ const { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerSta
 
 // Station Map
 const stations = {
-  'ruggedraw.94': {
+  'ruggedraw94': {
     name: 'Rugged Raw 94',
     url: 'https://radio.projectradio.org/listen/ruggedraw94/radio.mp3'
   },
-  'project.fm': {
+  'projectfm': {
     name: 'PROJECT FM',
     url: 'https://radio.projectradio.org/listen/projectfm/radio.mp3'
   }
