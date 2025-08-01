@@ -20,10 +20,10 @@ module.exports = {
     .setName('playradio')
     .setDescription('Play a live radio stream')
     .addSubcommand(sub =>
-      sub.setName('ruggedraw.94')
+      sub.setName('ruggedraw94')
         .setDescription('Play Rugged Raw 94 stream'))
     .addSubcommand(sub =>
-      sub.setName('project.fm')
+      sub.setName('projectfm')
         .setDescription('Play PROJECT FM stream')),
 
   async execute(interaction) {
