@@ -10,7 +10,7 @@ const stations = {
   },
   'projectfm': {
     name: 'PROJECT FM',
-    url: 'https://radio.projectradio.org/listen/projectfm/radio.mp3'
+    url: 'http://10.0.0.104/listen/projectfm/radio.mp3'
   }
   // Add more stations here
 };
