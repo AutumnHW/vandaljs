@@ -1,65 +1,101 @@
-// playradio.js
 const { SlashCommandBuilder } = require('discord.js');
-const { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus } = require('@discordjs/voice');
-
-// Station Map
-const stations = {
-  'ruggedraw94': {
-    name: 'Rugged Raw 94',
-    url: 'https://radio.projectradio.org/listen/ruggedraw94/radio.mp3'
-  },
-  'projectfm': {
-    name: 'PROJECT FM',
-    url: 'http://10.0.0.104/listen/projectfm/radio.mp3'
-  }
-  // Add more stations here
-};
-
+const {
+    joinVoiceChannel,
+    createAudioPlayer,
+    createAudioResource,
+    AudioPlayerStatus,
+    NoSubscriberBehavior,
+} = require('@discordjs/voice');
+// ─────────────────────────────
+// Chungus Chuddy Bot Logic
+// ─────────────────────────────
 module.exports = {
-  data: new SlashCommandBuilder()
-    .setName('playradio')
-    .setDescription('Play a live radio stream')
-    .addSubcommand(sub =>
-      sub.setName('ruggedraw94')
-        .setDescription('Play Rugged Raw 94 stream'))
-    .addSubcommand(sub =>
-      sub.setName('projectfm')
-        .setDescription('Play PROJECT FM stream')),
+    data: new SlashCommandBuilder()
+        .setName('playradio')
+        .setDescription('eventually this might play the radio')
+        .addStringOption((option) =>
+            option
+                .setName('station')
+                .setDescription('The station you want to play')
+                .setRequired(true)
+                .addChoices(
+                    { name: 'DOGSTAR', value: "0" },
+                    { name: 'PROJECT.FM', value: "1" },
+                    { name: 'RUGGEDRAW.94', value: "2" },
+                    { name: 'UNDERGROUND.FM', value: "3" },
+                ),
+        ),
+    async execute(interaction) {
+        const player = createAudioPlayer({ behaviors: { noSubscriber: NoSubscriberBehavior.Pause, }, });
+        const target = interaction.options.getString('station');
+        const channel = interaction.member.voice.channel;
+        const signalurl = [];
+        const connectMessage = [];
+        connectMessage.push("📡 Connected to DOGSTAR",
+            "📡 Connected to PROJECT.FM",
+            "📡 Connected to RUGGEDRAW.94",
+            "📡 Connected to UNDERGROUND.FM");
 
-  async execute(interaction) {
-    const subcommand = interaction.options.getSubcommand();
-    const station = stations[subcommand];
 
-    if (!station) {
-      return interaction.reply({ content: ' Unknown station.', ephemeral: true });
-    }
+        signalurl.push("https://signal.projectradio.org/listen/dogstarfm/radio.mp3",
+            "https://signal.projectradio.org/listen/prfm/radio.mp3",
+            "https://signal.projectradio.org/listen/ruggedraw94/radio.mp3",
+            "https://signal.projectradio.org/listen/undergroundfm/radio.mp3");
 
-    const voiceChannel = interaction.member.voice.channel;
-    if (!voiceChannel) {
-      console.log(voiceChannel)
-      return interaction.reply({ content: ' You must be in a voice channel.', ephemeral: true });
+
+        const resource = createAudioResource(signalurl[parseInt(target)], {
+            inlineVolume: true,
+        });
+        const connection = joinVoiceChannel({
+            channelId: channel.id,
+            guildId: channel.guild.id,
+            adapterCreator: channel.guild.voiceAdapterCreator,
+            selfDeaf: false,
+        });
+        resource.volume.setVolume(0.7);
+
+        player.play(resource);
+        connection.subscribe(player);
+
+        interaction.reply(connectMessage[parseInt(target)]);
+    },
+};
+/*
+client.on('interactionCreate', async interaction => {
+  if (!interaction.isChatInputCommand()) return;
+
+  if (interaction.commandName === 'radio') {
+    const channel = interaction.member.voice.channel;
+
+    if (!channel) {
+      return interaction.reply({
+        content: '🔌 You need to be in a voice channel.',
+        ephemeral: true,
+      });
     }
 
     const connection = joinVoiceChannel({
-      channelId: voiceChannel.id,
-      guildId: interaction.guild.id,
-      adapterCreator: interaction.guild.voiceAdapterCreator
+      channelId: channel.id,
+      guildId: channel.guild.id,
+      adapterCreator: channel.guild.voiceAdapterCreator,
+      selfDeaf: false,
     });
 
-    const resource = createAudioResource(station.url, { inlineVolume: true });
-    const player = createAudioPlayer();
+    const resource = createAudioResource(RADIO_URL, {
+      inlineVolume: true,
+    });
 
-    connection.subscribe(player);
+    resource.volume.setVolume(0.7);
+
     player.play(resource);
+    connection.subscribe(player);
 
-    player.on(AudioPlayerStatus.Playing, () => {
-      //console.log(🔊 Streaming ${station.name});
-    });
-
-    player.on('error', error => {
-      console.error("your shit broken my g${error.message}");
-    });
-
-    await interaction.reply("playing hopefully");
+    interaction.reply('📡 Connected to Underground FM');
   }
-};
+
+  if (interaction.commandName === 'stop') {
+    player.stop();
+    interaction.reply('🔌 Radio stopped.');
+  }
+});
+*/
