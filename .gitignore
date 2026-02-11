@@ -2,3 +2,5 @@ package-lock.json
 /node_modules
 config.json
 eslint.config.js
+config-prtest.json
+configtesticle.json
