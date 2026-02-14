@@ -1,7 +1,7 @@
 const { EmbedBuilder } = require('discord.js');
 
 class PrEmbed {
-    constructor(type, level, xp, msgs, hvc, userpfp) {
+    constructor(type, level, xp, msgs, hvc, userpfp, username) {
         
 
         this.embed = new EmbedBuilder()
@@ -9,7 +9,8 @@ class PrEmbed {
                 name: "VANDAL",
                 iconURL: "https://labs.projectradio.org/VANDAL/vandal.png",
             })
-            .setTitle("Your standing:")
+            .setTitle(username)
+            .setDescription("**Your standing:**")
             .addFields(
                 {
                     name: "Level:",
@@ -37,7 +38,7 @@ class PrEmbed {
             .setThumbnail(String(userpfp))
             .setFooter({
                 text: "Project Radio | Your guide through the noise.",
-                iconURL: "https://labs.projectradio.org/VANDAL/newprlabs80x80.png",
+                iconURL: "https://labs.projectradio.org/VANDAL/prlogowhite80x80.png",
             })
             .setTimestamp();
     }

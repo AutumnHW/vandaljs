@@ -14,6 +14,7 @@ module.exports = {
 		//ai code anywhere in this codebase.
 		const userID = specificUser ?? interaction.user;
 		const userpfp = userID.displayAvatarURL({ dynamic: true, size: 1024 });
+		const username = userID.username;
 
 		//grab the users info from the data structure
 		//these are established in the same order as the params because
@@ -26,6 +27,6 @@ module.exports = {
 
 
 		//call the embed builder with this data
-		await interaction.reply(new PrEmbed('level', level, totalxp, totalmsgs, hoursvc, userpfp).build());
+		await interaction.reply(new PrEmbed('level', level, totalxp, totalmsgs, hoursvc, userpfp, username).build());
 	},
 };

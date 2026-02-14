@@ -8,6 +8,7 @@ module.exports = {
          // Ignore bots (VERY IMPORTANT)
         if (message.author.bot) return;
     userData.xpAdd(message.author, 10);
+    userData.msgAdd(message.author, 1);
     
 }
 

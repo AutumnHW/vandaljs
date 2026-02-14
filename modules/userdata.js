@@ -78,6 +78,15 @@ function xpAdd(userid, xptoadd){
     console.log('wrote userid ' + userid + ' to file ' + parseUserID(userid));
     console.log('reading back from file: ' + DataFile.data.xp);
 }
+function msgAdd(userid, msgtoadd){
+    msgs =  getUserData('totalmsgs', userid);
+    const DataFileRaw = fs.readFileSync(parseUserID(userid));
+    const DataFile = JSON.parse(DataFileRaw);
+    DataFile.data.totalmsgs = msgs + msgtoadd;
+    fs.writeFileSync(parseUserID(userid), JSON.stringify(DataFile, null, 2));
+    console.log('wrote userid ' + userid + ' to file ' + parseUserID(userid));
+    console.log('reading back from file: ' + DataFile.data.xp);
+}
 function levelCalculator(xp){
     const level = Math.ceil(xp / 300);
     console.log('levelCalculator returned ' + level + "xp paramater equals " + xp);
@@ -86,6 +95,7 @@ function levelCalculator(xp){
 module.exports = {
     getUserData,
     getUserInfo,
+    msgAdd,
     xpAdd
 }
 //these were here for debugging purposes, leaving them commented here bc why not, might help you
