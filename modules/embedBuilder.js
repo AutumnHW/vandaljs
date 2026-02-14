@@ -1,8 +1,19 @@
 const { EmbedBuilder } = require('discord.js');
-
+const userData = require(process.cwd() + '/modules/userdata.js')
 class PrEmbed {
-    constructor(type, level, xp, msgs, hvc, userpfp, username) {
-        
+    constructor(type, level, xp, msgs, hvc, userpfp, username, userid) {
+        const sentinel = parseInt(userData.getUserData('sentinel', userid));
+        let bannerFile;
+        let standingMessage;
+        let embedColor;
+        if (sentinel > 0) {
+             bannerFile = 'https://labs.projectradio.org/VANDAL/sentbanner.png';
+             standingMessage = "**WELCOME SENTINEL | Your standing:**"
+             embedColor = '#1D47B7'
+        } else {  bannerFile = 'https://labs.projectradio.org/VANDAL/ccbanner.png'; console.log(bannerFile); 
+            standingMessage= "**Your standing:**"
+            embedColor = '#057205'
+        }
 
         this.embed = new EmbedBuilder()
             .setAuthor({
@@ -10,7 +21,7 @@ class PrEmbed {
                 iconURL: "https://labs.projectradio.org/VANDAL/vandal.png",
             })
             .setTitle(username)
-            .setDescription("**Your standing:**")
+            .setDescription(standingMessage)
             .addFields(
                 {
                     name: "Level:",
@@ -33,8 +44,8 @@ class PrEmbed {
                     inline: false
                 }
             )
-            .setColor("#057205")
-            .setImage("https://labs.projectradio.org/VANDAL/numetalbanner.png")
+            .setColor(embedColor)
+            .setImage(bannerFile)
             .setThumbnail(String(userpfp))
             .setFooter({
                 text: "Project Radio | Your guide through the noise.",
