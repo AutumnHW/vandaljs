@@ -14,8 +14,13 @@ module.exports = {
 		if(userData.getUserInfo(interaction.user, 'permissions')){};
 		//console.log(userData.getUserInfo(interaction.user, 'permissions'));
 		//console.log('target: ' + target + 'qty: ' + qty);
+			if(!userData.authenticateUser(target)){
+			await interaction.reply('You do not have permission to execute this command.');
+
+		}else{
 		userData.xpAdd(target, qty);
 		//reply with new xp value
 		await interaction.reply('Ok!  New XP Value for ' + username + ' is: ' + userData.getUserData('xp', target));
+		};
 	},
 };
