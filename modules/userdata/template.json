@@ -9,10 +9,10 @@
 
     },
     "data":{
-        "totalxp":0,
+        "xp":0,
         "level":0,
         "totalmsgs":0,
-        "swagpoints":0
+        "hoursvc":0
     }
 
 
