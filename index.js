@@ -3,6 +3,7 @@ const path = require('node:path');
 const { Client, Collection, GatewayIntentBits} = require('discord.js');
 const { token } = require('./config.json');
 const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildVoiceStates] });
+const debugmode = true
 //const welcomeChannel = client.channels.cache.get('1327755122960236636');
 //reading the commands folder and parsing files
 client.commands = new Collection();
@@ -10,7 +11,9 @@ const foldersPath = path.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
 for (const folder of commandFolders) {
 	const commandsPath = path.join(foldersPath, folder);
+	if(debugmode){console.log('commandsPath is ' + commandsPath );};
 	const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+	if(debugmode){console.log('commandFiles is ' + commandsPath );};
 	for (const file of commandFiles) {
 		const filePath = path.join(commandsPath, file);
 		const command = require(filePath);
