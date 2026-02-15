@@ -7,7 +7,7 @@ module.exports = {
         .setDescription('Elevates the command runners permissions level'),
     async execute(interaction) {
         if (interaction.member.roles.cache.has(config.vandalAdminRole)) {
-            userData.newsuperuser(interaction.member.id);
+            userData.newSuperUser(interaction.member.id);
             await interaction.reply('Your permissions value has been elevated!');
         } else {
             await interaction.reply('You are not authorized!');

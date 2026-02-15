@@ -11,7 +11,7 @@ module.exports = {
 		const target = interaction.options.getUser('user');
 		const qty = interaction.options.getInteger('qty');
 		const username = target.username;
-		if(userData.getUserInfo(interaction.user, 'permissions')){};
+		if(!userData.authenticateUser(interaction.member.id)){};
 		//console.log(userData.getUserInfo(interaction.user, 'permissions'));
 		//console.log('target: ' + target + 'qty: ' + qty);
 			if(!userData.authenticateUser(interaction.member.id)){

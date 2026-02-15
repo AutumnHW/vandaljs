@@ -73,8 +73,8 @@ function xpAdd(userid, xptoadd) {
     const DataFile = JSON.parse(DataFileRaw);
     const level = DataFile.data.level;
     DataFile.data.xp = xp + xptoadd;
-    DataFile.data.level = levelCalculator(xp+xptoadd,level);
-     if(levelCalculator(xp+xptoadd,level)<10){
+    DataFile.data.level = levelFromXP(xp+xptoadd);
+     if(levelFromXP(xp+xptoadd)<10){
         DataFile.data.sentinel = 0
         
     }else{
@@ -136,8 +136,8 @@ function msgAdd(userid, msgtoadd) {
     const DataFile = JSON.parse(DataFileRaw);
     DataFile.data.totalmsgs = msgs + msgtoadd;
     DataFile.data.xp = xp + xptoadd;
-    DataFile.data.level = levelCalculator(xp+xptoadd,DataFile.data.level);
-    if(levelCalculator(xp + xptoadd,DataFile.data.level)<10){
+    DataFile.data.level = levelFromXP(xp+xptoadd);
+    if(levelFromXP(xp + xptoadd)<10){
         DataFile.data.sentinel = 0
         
     }else{
@@ -148,13 +148,15 @@ function msgAdd(userid, msgtoadd) {
     console.log('reading back from file: ' + DataFile.data.totalmsgs);
 }
 //todo: im tired of working on this today, remove this..!
+/* 02-15: done!
 function levelCalculator(xp, oldlevel) {
         return levelFromXP(xp);
     }
+*/
 function calculateXPByLevel(levelToSet){
         return Math.ceil(levelToSet * (300 * (1 + (0.04 * levelToSet))));;
 }
-function newsuperuser(userid){
+function newSuperUser(userid){
     const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
     const DataFile = JSON.parse(DataFileRaw);
     DataFile.attributes.permissions = 2
@@ -187,7 +189,7 @@ module.exports = {
     setLevel,
     xpClear,
     xpAdd,
-    newsuperuser
+    newSuperUser
 }
 //these were here for debugging purposes, leaving them commented here bc why not, might help you
 //learn how this works.
