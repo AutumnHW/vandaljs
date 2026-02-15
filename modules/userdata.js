@@ -8,12 +8,6 @@ function getUserData(field, userid) {
     const raw = fs.readFileSync(getUserDataPath(userid));
     const userObject = JSON.parse(raw);
     const data = userObject.data;
-    const xp = parseInt(data.xp);
-    const oldLevel = parseInt(data.level);
-    data.level = levelCalculator(xp, oldLevel);
-    if (data.level > 9) {
-        data.sentinel = 1;
-    } else { data.sentinel = 0 }
 
     //const { userObject } = 
     console.log('getUserData for: ' + userid + ' requesting data field: ' + field + ' returns: ' + data[field]);
@@ -77,8 +71,17 @@ function xpAdd(userid, xptoadd) {
     xp = getUserData('xp', userid);
     const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
     const DataFile = JSON.parse(DataFileRaw);
+    const level = DataFile.data.level;
     DataFile.data.xp = xp + xptoadd;
+    DataFile.data.level = levelCalculator(xp+xptoadd,level);
+     if(levelCalculator(xp+xptoadd,level)<10){
+        DataFile.data.sentinel = 0
+        
+    }else{
+        DataFile.data.sentinel = 1
+    }
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
+   
     console.log('wrote userid ' + userid + ' to file ' + getUserDataPath(userid));
     console.log('reading back from file: ' + DataFile.data.xp);
 }
@@ -91,8 +94,14 @@ function setLevel(userid, levelToSet) {
     const targetLevel = parseInt(levelToSet);
     const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
     const DataFile = JSON.parse(DataFileRaw);
-    DataFile.data.xp = calculateXPByLevel(targetLevel);
+    DataFile.data.xp = xpRequiredForLevel(targetLevel);
     DataFile.data.level = targetLevel;
+     if(levelToSet<10){
+        DataFile.data.sentinel = 0
+        
+    }else{
+        DataFile.data.sentinel = 1
+    }
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
     console.log('wrote userid ' + userid + ' to file ' + getUserDataPath(userid));
     console.log('reading back from file: ' + DataFile.data.xp);
@@ -127,17 +136,23 @@ function msgAdd(userid, msgtoadd) {
     const DataFile = JSON.parse(DataFileRaw);
     DataFile.data.totalmsgs = msgs + msgtoadd;
     DataFile.data.xp = xp + xptoadd;
+    DataFile.data.level = levelCalculator(xp+xptoadd,DataFile.data.level);
+    if(levelCalculator(xp + xptoadd,DataFile.data.level)<10){
+        DataFile.data.sentinel = 0
+        
+    }else{
+        DataFile.data.sentinel = 1
+    }
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
     console.log('wrote userid ' + userid + ' to file ' + getUserDataPath(userid));
     console.log('reading back from file: ' + DataFile.data.totalmsgs);
 }
+//todo: im tired of working on this today, remove this..!
 function levelCalculator(xp, oldlevel) {
-        const level = Math.floor(xp / (300 * (1 + (0.04 * oldlevel))));
-        console.log('levelCalculator returned ' + level + "xp paramater equals " + xp);
-        return level;
+        return levelFromXP(xp);
     }
 function calculateXPByLevel(levelToSet){
-        return Math.floor(levelToSet * (300 * (1 + (0.04 * levelToSet))));;
+        return Math.ceil(levelToSet * (300 * (1 + (0.04 * levelToSet))));;
 }
 function newsuperuser(userid){
     const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
@@ -145,6 +160,24 @@ function newsuperuser(userid){
     DataFile.attributes.permissions = 2
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
     
+}
+function levelFromXP(totalXP) {
+    let level = 0;
+    while (totalXP >= xpRequiredForLevel(level + 1)) {
+        level++;
+    }
+    return level;
+}
+function xpRequiredForLevel(level) {
+    const baseXP = 300;
+    const growthFactor = 1.04; // 4% more XP per level
+    let xpNeeded = 0;
+
+    for (let i = 1; i <= level; i++) {
+        xpNeeded += Math.floor(baseXP * Math.pow(growthFactor, i - 1));
+    }
+
+    return xpNeeded;
 }
 module.exports = {
     getUserData,

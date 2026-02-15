@@ -16,6 +16,7 @@ module.exports = {
         userData.msgAdd(message.author, 1);
         console.log('checking for level up');
         newLevel = userData.getUserData('level', message.author)
+        console.log(newLevel);
         if(newLevel > currentLevel){
             outputChannel.send('User ' + pingObject + levelUpString + newLevel);
         }
