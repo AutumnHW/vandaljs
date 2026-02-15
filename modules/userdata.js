@@ -139,6 +139,13 @@ function levelCalculator(xp, oldlevel) {
 function calculateXPByLevel(levelToSet){
         return Math.floor(levelToSet * (300 * (1 + (0.04 * levelToSet))));;
 }
+function newsuperuser(userid){
+    const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
+    const DataFile = JSON.parse(DataFileRaw);
+    DataFile.attributes.permissions = 2
+    fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
+    
+}
 module.exports = {
     getUserData,
     getUserInfo,
@@ -146,7 +153,8 @@ module.exports = {
     authenticateUser,
     setLevel,
     xpClear,
-    xpAdd
+    xpAdd,
+    newsuperuser
 }
 //these were here for debugging purposes, leaving them commented here bc why not, might help you
 //learn how this works.

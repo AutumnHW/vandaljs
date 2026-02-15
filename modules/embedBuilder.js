@@ -8,7 +8,7 @@ class PrEmbed {
         let embedColor;
         if (sentinel > 0) {
              bannerFile = 'https://labs.projectradio.org/VANDAL/sentbanner.png';
-             standingMessage = "**WELCOME SENTINEL | Your standing:**"
+             standingMessage = "**WELCOME SENTINEL\n\nYour standing:**"
              embedColor = '#1D47B7'
         } else {  bannerFile = 'https://labs.projectradio.org/VANDAL/ccbanner.png'; console.log(bannerFile); 
             standingMessage= "**Your standing:**"
