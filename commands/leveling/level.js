@@ -11,7 +11,7 @@ module.exports = {
 		const target = interaction.options.getUser('user');
 		const level = interaction.options.getInteger('level');
 		const username = target.username;
-		if(!userData.authenticateUser(target)){
+		if(!userData.authenticateUser(interaction.member.id)){
 			await interaction.reply('You do not have permission to execute this command.');
 
 		}else{

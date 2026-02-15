@@ -14,7 +14,7 @@ module.exports = {
 		if(userData.getUserInfo(interaction.user, 'permissions')){};
 		//console.log(userData.getUserInfo(interaction.user, 'permissions'));
 		//console.log('target: ' + target + 'qty: ' + qty);
-			if(!userData.authenticateUser(target)){
+			if(!userData.authenticateUser(interaction.member.id)){
 			await interaction.reply('You do not have permission to execute this command.');
 
 		}else{
