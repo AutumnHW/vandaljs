@@ -1,8 +1,20 @@
 const fs = require('node:fs');
 const path = require('node:path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const { token } = require('./config.json');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMembers, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent, GatewayIntentBits.GuildVoiceStates] });
+const client = new Client({ intents: [
+	GatewayIntentBits.Guilds, 
+	GatewayIntentBits.GuildMembers, 
+	GatewayIntentBits.GuildMessages, 
+	GatewayIntentBits.MessageContent, 
+	GatewayIntentBits.GuildMessageReactions,
+	GatewayIntentBits.GuildVoiceStates],  
+	partials: [
+    Partials.Message,
+    Partials.Channel,
+    Partials.Reaction
+  ]
+});
 const debugmode = true
 //const welcomeChannel = client.channels.cache.get('1327755122960236636');
 //reading the commands folder and parsing files
@@ -44,3 +56,5 @@ if (!fs.existsSync(process.cwd() + '/modules/userdata/servers')) {
 }
 
 client.login(token);
+
+module.exports = {client};
