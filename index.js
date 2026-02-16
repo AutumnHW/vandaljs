@@ -38,4 +38,9 @@ for (const file of eventFiles) {
 	}
 }
 
+//create the userData file structure if it does not exist already.
+if (!fs.existsSync(process.cwd() + '/modules/userData/servers')) {
+	fs.mkdirSync(process.cwd() + '/modules/userData/servers');
+}
+
 client.login(token);
