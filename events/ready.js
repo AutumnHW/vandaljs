@@ -5,9 +5,9 @@ module.exports = {
 	once: true,
 	execute(client) {
 		console.log(`Ready! Logged in as ${client.user.tag}`);
-		client.user.setActivity('Project Radio', { 
+		client.user.setActivity('Project Radio', {
 			type: ActivityType.Listening,
-});
+		});
 
 	},
 };

@@ -19,11 +19,5 @@ module.exports = {
 			userData.setLevel(target, level);
 			await interaction.reply('Ok! Set ' + username + "'s level to: "  + userData.getUserData('level', target));
 		}
-
-		//console.log(userData.getUserInfo(interaction.user, 'permissions'));
-		//console.log('target: ' + target + 'qty: ' + qty);
-		//userData.xpAdd(target, qty);
-		//reply with new xp value
-		
 	},
 }

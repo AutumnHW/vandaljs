@@ -9,13 +9,11 @@ module.exports = {
 	async execute(interaction) {
 		//who is running this command?
 		const specificUser = interaction.options.getUser('user');
-
 		//wow chatgpt actually taught me about this syntax, rare chatgpt w? I wrote this theres no direct
 		//ai code anywhere in this codebase.
 		const userID = specificUser ?? interaction.user;
 		const userpfp = userID.displayAvatarURL({ dynamic: true, size: 1024 });
 		const username = userID.globalName;
-
 		//grab the users info from the data structure
 		//these are established in the same order as the params because
 		//javascript or something idk
@@ -24,8 +22,6 @@ module.exports = {
 		totalxp = userData.getUserData('xp', userID);
 		totalmsgs = userData.getUserData('totalmsgs', userID);
 		hoursvc = userData.getUserData('hoursvc', userID);
-
-
 		//call the embed builder with this data
 		await interaction.reply(new PrEmbed('level', level, totalxp, totalmsgs, hoursvc, userpfp, username, userID).build());
 	},

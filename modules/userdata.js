@@ -1,60 +1,36 @@
 const fs = require('node:fs');
+/*getUserData and getUserInfo are separated for one reason, getUserInfo is for attributes about a user.
+ Username, join date, permissions level, etc. getUserData is for actively updated leveling attributes like XP and Level.
+*/
 function getUserData(field, userid) {
-    console.log('existsSync returns' + fs.existsSync(getUserDataPath(userid)));
-    // try {
+    //console.log('existsSync returns' + fs.existsSync(getUserDataPath(userid)));
     if (!fs.existsSync(getUserDataPath(userid))) {
         enrollUserData(userid);
     }
     const raw = fs.readFileSync(getUserDataPath(userid));
     const userObject = JSON.parse(raw);
     const data = userObject.data;
-
-    //const { userObject } = 
     console.log('getUserData for: ' + userid + ' requesting data field: ' + field + ' returns: ' + data[field]);
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(userObject, null, 2));
     return (data[field]);
-    /*}  catch (err) {
-          console.log('An Exception occured at getUserDataPath(): ' + err.message)
-          console.log('Arguments userid: ' + userid);
-          throw new Error('An Exception occured' + err.message)
-      }
-  */
 }
 function getUserInfo(field, userid) {
-    console.log('existsSync returns' + fs.existsSync(getUserDataPath(userid)));
-    // try {
+    //console.log('existsSync returns' + fs.existsSync(getUserDataPath(userid)));
     if (!fs.existsSync(getUserDataPath(userid))) {
         enrollUserData(userid);
     }
     const raw = fs.readFileSync(getUserDataPath(userid));
     const userObject = JSON.parse(raw);
     const data = userObject.attributes;
-    const permissions = parseInt(data.permissions);
-
-
-    //const { userObject } = 
     console.log('getUserInfo for: ' + userid + ' requesting data field: ' + field + ' returns: ' + data[field]);
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(userObject, null, 2));
     return (data[field]);
-    /*}  catch (err) {
-          console.log('An Exception occured at getUserDataPath(): ' + err.message)
-          console.log('Arguments userid: ' + userid);
-          throw new Error('An Exception occured' + err.message)
-      }
-  */
-
 }
 
 function getUserDataPath(userid) {
-    //const 
-
     return (process.cwd() + '/modules/userdata/' + userid + '.json')
-
-
-
 }
 function enrollUserData(userid) {
-
     fs.copyFileSync(getUserDataPath('template'), getUserDataPath(userid));
     const newDataFileRaw = fs.readFileSync(getUserDataPath(userid));
     const newDataFile = JSON.parse(newDataFileRaw);
@@ -73,15 +49,15 @@ function xpAdd(userid, xptoadd) {
     const DataFile = JSON.parse(DataFileRaw);
     const level = DataFile.data.level;
     DataFile.data.xp = xp + xptoadd;
-    DataFile.data.level = levelFromXP(xp+xptoadd);
-     if(levelFromXP(xp+xptoadd)<10){
+    DataFile.data.level = levelFromXP(xp + xptoadd);
+    if (levelFromXP(xp + xptoadd) < 10) {
         DataFile.data.sentinel = 0
-        
-    }else{
+
+    } else {
         DataFile.data.sentinel = 1
     }
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
-   
+
     console.log('wrote userid ' + userid + ' to file ' + getUserDataPath(userid));
     console.log('reading back from file: ' + DataFile.data.xp);
 }
@@ -96,10 +72,10 @@ function setLevel(userid, levelToSet) {
     const DataFile = JSON.parse(DataFileRaw);
     DataFile.data.xp = xpRequiredForLevel(targetLevel);
     DataFile.data.level = targetLevel;
-     if(levelToSet<10){
+    if (levelToSet < 10) {
         DataFile.data.sentinel = 0
-        
-    }else{
+
+    } else {
         DataFile.data.sentinel = 1
     }
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
@@ -108,16 +84,8 @@ function setLevel(userid, levelToSet) {
 }
 //xpClear(userid): userid: id of the user you would like to clear xp for.
 function xpClear(userid) {
-    //xp declaration must go above file handles, as a condition is possible where
-    //user runs command but is not yet enrolled in the data structure
-    //todo handle recieving undefined!!!!
-    xp = getUserData('xp', userid);
-    const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
-    const DataFile = JSON.parse(DataFileRaw);
-    DataFile.data.xp = 0
-    fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
-    console.log('wrote userid ' + userid + ' to file ' + getUserDataPath(userid));
-    console.log('reading back from file: ' + DataFile.data.xp);
+    const xp = getUserData('xp', userid)
+    xpAdd(userid, -(xp))
 }
 
 function authenticateUser(userid) {
@@ -126,7 +94,6 @@ function authenticateUser(userid) {
     } else {
         return false;
     }
-
 }
 function msgAdd(userid, msgtoadd) {
     msgs = getUserData('totalmsgs', userid);
@@ -136,11 +103,11 @@ function msgAdd(userid, msgtoadd) {
     const DataFile = JSON.parse(DataFileRaw);
     DataFile.data.totalmsgs = msgs + msgtoadd;
     DataFile.data.xp = xp + xptoadd;
-    DataFile.data.level = levelFromXP(xp+xptoadd);
-    if(levelFromXP(xp + xptoadd)<10){
+    DataFile.data.level = levelFromXP(xp + xptoadd);
+    if (levelFromXP(xp + xptoadd) < 10) {
         DataFile.data.sentinel = 0
-        
-    }else{
+
+    } else {
         DataFile.data.sentinel = 1
     }
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
@@ -153,15 +120,15 @@ function levelCalculator(xp, oldlevel) {
         return levelFromXP(xp);
     }
 */
-function calculateXPByLevel(levelToSet){
-        return Math.ceil(levelToSet * (300 * (1 + (0.04 * levelToSet))));;
+function calculateXPByLevel(levelToSet) {
+    return Math.ceil(levelToSet * (300 * (1 + (0.04 * levelToSet))));;
 }
-function newSuperUser(userid){
+function newSuperUser(userid) {
     const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
     const DataFile = JSON.parse(DataFileRaw);
     DataFile.attributes.permissions = 2
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
-    
+
 }
 function levelFromXP(totalXP) {
     let level = 0;
