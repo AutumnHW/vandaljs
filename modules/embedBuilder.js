@@ -7,11 +7,18 @@ class PrEmbed {
         let standingMessage;
         let embedColor;
         if (sentinel > 0) {
-             bannerFile = 'https://labs.projectradio.org/VANDAL/sentbanner.png';
-             standingMessage = "**WELCOME SENTINEL\n\nYour standing:**"
-             embedColor = '#1D47B7'
-        } else {  bannerFile = 'https://labs.projectradio.org/VANDAL/ccbanner.png'; console.log(bannerFile); 
-            standingMessage= "**Your standing:**"
+            bannerFile = 'https://labs.projectradio.org/VANDAL/sentbanner.png';
+            standingMessage = "**WELCOME SENTINEL\n\nYour standing:**"
+            embedColor = '#1D47B7'
+        } else if (xp < 0) {
+            bannerFile = 'https://labs.projectradio.org/VANDAL/hellbanner' + Math.floor(1+(Math.random()*6)) + '.png'
+            console.log(bannerFile);
+            standingMessage = "**You are in HELL, not sure how you ended up here honestly...\n\nYour standing:**"
+            embedColor = '#FFFFFF'
+
+        } else {
+            bannerFile = 'https://labs.projectradio.org/VANDAL/ccbanner.png'; console.log(bannerFile);
+            standingMessage = "**Your standing:**"
             embedColor = '#057205'
         }
 
