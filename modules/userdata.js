@@ -26,12 +26,16 @@ function getUserInfo(field, userid) {
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(userObject, null, 2));
     return (data[field]);
 }
-
+//hardcoding this FOR NOW! Eventually this will either be read from a config file or happen during guild onboarding when the bot is setup.
 function getUserDataPath(userid) {
-    return (process.cwd() + '/modules/userdata/' + userid + '.json')
+    const guildDataPath = process.cwd() + '/modules/userdata/servers/' + '1273225452915396670' + '/'
+    if (!fs.existsSync(guildDataPath)) {
+        fs.mkdirSync(guildDataPath);
+    }
+    return (guildDataPath + userid + '.json')
 }
 function enrollUserData(userid) {
-    fs.copyFileSync(getUserDataPath('template'), getUserDataPath(userid));
+    fs.copyFileSync(process.cwd() + '/modules/userdata/template.json', getUserDataPath(userid));
     const newDataFileRaw = fs.readFileSync(getUserDataPath(userid));
     const newDataFile = JSON.parse(newDataFileRaw);
     console.log('new user onboarding with userid ' + userid);
