@@ -37,7 +37,8 @@ Both branches relies on one configuration file in the root of the project direct
 {
     "token": "",
     "clientId": "",
-    "guildId": ""
+    "guildId": "",
+    "vandalAdminRole": ""
 }
 ```
 <ul>
@@ -45,4 +46,5 @@ Both branches relies on one configuration file in the root of the project direct
 <li><code>clientId</code>: Contains your bot's client ID</li>
 <li><code>guildId</code>: Contains the ID of a guild that you wish to use as the development guild. In the <code>main</code> branch this option will also
 establish the server leveling and other rich data functions operate in.</li>
+<li><code>vandalAdminRole</code>: Contains the ID of the role you would like to set as Vandal's admin role. This will eventually be compatible with onboarding through commands.</li>
 </ul>
