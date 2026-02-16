@@ -12,16 +12,21 @@ module.exports = {
         const currentLevel = userData.getUserData('level', message.author);
         const pingObject = "<@" + message.author + ">"
         const levelUpString = ' has reached terminal operator access level '
+        const levelUpStringSentinel = ' | Congratulations, you are now a SENTINEL '
+        const member = message.member;
+        const sentinelRole = message.guild.roles.cache.get('1328727053859815439')
         //userData.xpAdd(message.author, 10);
         userData.msgAdd(message.author, 1);
         console.log('checking for level up');
         newLevel = userData.getUserData('level', message.author)
         console.log(newLevel);
-        if(newLevel > currentLevel){
+        if (newLevel > currentLevel && newLevel == 10) {
+            await member.roles.add(sentinelRole);
+            outputChannel.send('User ' + pingObject + levelUpString + newLevel + levelUpStringSentinel);
+        } else if (newLevel > currentLevel){
+            await member.roles.remove(sentinelRole);
             outputChannel.send('User ' + pingObject + levelUpString + newLevel);
         }
-
-
     }
 
 }
