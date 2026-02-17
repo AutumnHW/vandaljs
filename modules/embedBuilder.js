@@ -17,7 +17,7 @@ class PrEmbed {
             embedColor = '#FFFFFF'
 
         } else {
-            bannerFile = 'https://labs.projectradio.org/VANDAL/ccbanner.png'; console.log(bannerFile);
+            bannerFile = 'https://labs.projectradio.org/VANDAL/ccbanner1.png'; console.log(bannerFile);
             standingMessage = "**Your standing:**"
             embedColor = '#057205'
         }
