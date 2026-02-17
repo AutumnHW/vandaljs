@@ -1,3 +1,7 @@
+/* EXPERIMENTAL: This code is exclusively maintained by chatgpt, i cannot be arsed to and im curious if itll do a good job...
+This is the only place its direct input contributes to this codebase however.
+
+*/
 const {
     SlashCommandBuilder,
     EmbedBuilder,
@@ -15,30 +19,35 @@ module.exports = {
     async execute(interaction) {
         const author = interaction.user;
         let board = [null, null, null, null, null, null, null, null, null];
-        let xpAtHand = Math.ceil(Math.random()*100);
+        let xpAtHand = Math.ceil(Math.random() * 100);
         const player = '❌';
         const bot = '⭕';
 
-        function checkWinner(b) {
+        function checkWinner(board) {
             const wins = [
-                [0,1,2],[3,4,5],[6,7,8],
-                [0,3,6],[1,4,7],[2,5,8],
-                [0,4,8],[2,4,6]
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
             ];
 
-            for (const [a,b1,c] of wins) {
-                if (b[a] && b[a] === b[b1] && b[b1] === b[c]) {
-                    return b[a];
+            for (const [a, b, c] of wins) {
+                if (
+                    board[a] &&
+                    board[a] === board[b] &&
+                    board[a] === board[c]
+                ) {
+                    return board[a];
                 }
             }
 
-            if (b.every(cell => cell)) return 'draw';
+            if (board.every(cell => cell)) return 'draw';
             return null;
         }
 
+
         function botMove() {
             const free = board
-                .map((v,i) => v === null ? i : null)
+                .map((v, i) => v === null ? i : null)
                 .filter(v => v !== null);
 
             if (free.length === 0) return;
@@ -81,10 +90,10 @@ module.exports = {
             .setDescription(`You are ${player}`)
             .setColor(0xE67E22);
 
-        await interaction.reply({
+        interaction.reply({
             embeds: [embed],
             components: renderBoard()
-        });
+        }).catch(console.error);
 
         const message = await interaction.fetchReply();
 
@@ -94,9 +103,8 @@ module.exports = {
         });
 
         collector.on('collect', async i => {
-
             if (i.user.id !== interaction.user.id) {
-                return i.reply({ content: "This isn't your game.", ephemeral: true });
+                return i.reply({ content: "This isn't your game.", ephemeral: true }).catch(console.error);
             }
 
             const index = parseInt(i.customId);
@@ -112,48 +120,51 @@ module.exports = {
                 result = checkWinner(board);
             }
 
-            if (result) {
-                collector.stop();
-                console.log(result);
-                if(result == 'draw'){
-                    userData.xpAdd(author, xpAtHand);
+            try {
+                if (result) {
+                    collector.stop();
+                    console.log(result);
+                    if (result === 'draw') {
+                        userData.xpAdd(author, xpAtHand);
+                    } else if (result === player) {
+                        userData.xpAdd(author, xpAtHand);
+                    } else if (result === bot) {
+                        userData.xpAdd(author, -(xpAtHand));
+                    }
+
+                    const endEmbed = EmbedBuilder.from(embed)
+                        .setTitle('Game Complete')
+                        .setDescription(
+                            result === 'draw'
+                                ? 'It’s a draw! You gained ' + xpAtHand + ' xp!'
+                                : result === player
+                                    ? 'You win! You gained ' + xpAtHand + ' xp!'
+                                    : 'I win! You lost ' + xpAtHand + ' xp for this blunder! For shame...'
+                        );
+
+                    await i.update({
+                        embeds: [endEmbed],
+                        components: renderBoard(true)
+                    });
+                } else {
+                    await i.update({
+                        embeds: [embed],
+                        components: renderBoard()
+                    });
                 }
-                 if(result == '❌'){
-                    userData.xpAdd(author, xpAtHand);
-                }
-                if(result == '⭕'){
-                    userData.xpAdd(author, -(xpAtHand));
-                }
-
-
-                const endEmbed = EmbedBuilder.from(embed)
-                    .setTitle('Game Complete')
-                    .setDescription(
-                        result === 'draw'
-                            ? 'It’s a draw! You gained ' + xpAtHand + ' xp!'
-                            : result === player
-                                ? 'You win! You gained ' + xpAtHand + ' xp!'
-                                : 'I win! You loose ' + xpAtHand + ' xp for this blunder! For shame...'
-                    );
-
-                return i.update({
-
-                    embeds: [endEmbed],
-                    components: renderBoard(true)
-                });
+            } catch (error) {
+                console.error('Error updating message:', error);
             }
-
-            await i.update({
-                embeds: [embed],
-                components: renderBoard()
-            });
         });
 
         collector.on('end', async () => {
-            await message.edit({
-                components: renderBoard(true)
-                
-            }).catch(() => {});
+            try {
+                await message.edit({
+                    components: renderBoard(true)
+                }).catch(console.error);
+            } catch (error) {
+                console.error('Error editing message:', error);
+            }
         });
     }
 };
