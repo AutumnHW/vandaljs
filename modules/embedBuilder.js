@@ -7,17 +7,17 @@ class PrEmbed {
         let standingMessage;
         let embedColor;
         if (sentinel > 0) {
-            bannerFile = 'https://labs.projectradio.org/VANDAL/sentbanner.png';
+            bannerFile = 'https://deepinpowered.xyz/VANDAL/sentbanner.png';
             standingMessage = "**WELCOME SENTINEL\n\nYour standing:**"
             embedColor = '#1D47B7'
         } else if (xp < 0) {
-            bannerFile = 'https://labs.projectradio.org/VANDAL/hellbanner' + Math.floor(1+(Math.random()*6)) + '.png'
+            bannerFile = 'https://deepinpowered.xyz/VANDAL/hellbanner' + Math.floor(1+(Math.random()*6)) + '.png'
             console.log(bannerFile);
             standingMessage = "**You are in HELL, not sure how you ended up here honestly...\n\nYour standing:**"
             embedColor = '#FFFFFF'
 
         } else {
-            bannerFile = 'https://labs.projectradio.org/VANDAL/ccbanner1.png'; console.log(bannerFile);
+            bannerFile = 'https://deepinpowered.xyz/VANDAL/ccbanner1.png'; console.log(bannerFile);
             standingMessage = "**Your standing:**"
             embedColor = '#057205'
         }
@@ -25,7 +25,7 @@ class PrEmbed {
         this.embed = new EmbedBuilder()
             .setAuthor({
                 name: "VANDAL",
-                iconURL: "https://labs.projectradio.org/VANDAL/vandal.png",
+                iconURL: "https://deepinpowered.xyz/VANDAL/vandal.png",
             })
             .setTitle(username)
             .setDescription(standingMessage)
