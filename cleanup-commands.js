@@ -14,6 +14,11 @@ const rest = new REST().setToken(token);
       Routes.applicationGuildCommands(clientId, guildId),
       { body: [] },
     );
+    console.log('Started clearing global application (/) commands...')
+    await rest.put(
+      Routes.applicationCommands(clientId, guildId),
+      { body: [] },
+    );
 
     console.log('Successfully cleared all guild slash commands.');
   } catch (error) {
