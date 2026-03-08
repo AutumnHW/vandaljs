@@ -23,8 +23,11 @@ module.exports = {
         if (newLevel > currentLevel && newLevel == 10) {
             await member.roles.add(sentinelRole);
             outputChannel.send('User ' + pingObject + levelUpString + newLevel + levelUpStringSentinel);
-        } else if (newLevel > currentLevel) {
+        } else if (newLevel > currentLevel && newLevel < 10) {
             await member.roles.remove(sentinelRole);
+            outputChannel.send('User ' + pingObject + levelUpString + newLevel);
+        }else if (newLevel > currentLevel && newLevel > 10) {
+            await member.roles.add(sentinelRole);
             outputChannel.send('User ' + pingObject + levelUpString + newLevel);
         }
     }
