@@ -152,6 +152,24 @@ function xpRequiredForLevel(level) {
 
     return xpNeeded;
 }
+function formatTime(ms) {
+
+    const seconds = Math.floor(ms / 1000) % 60;
+    const minutes = Math.floor(ms / 60000) % 60;
+    const hours = Math.floor(ms / 3600000);
+
+    return `${hours}h ${minutes}m ${seconds}s`;
+}
+function addVoiceChatTime(userid, ms){
+    const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
+    const DataFile = JSON.parse(DataFileRaw);
+    const existingTime = DataFile.data.hoursvc;
+    DataFile.data.hoursvc = existingTime + ms;
+    fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
+    console.log('added vctime ' + ms + ' to file ' + getUserDataPath(userid));
+    console.log('reading back from file: ' + DataFile.data.hoursvc);
+    
+}
 module.exports = {
     getUserData,
     getUserInfo,
@@ -160,10 +178,11 @@ module.exports = {
     setLevel,
     xpClear,
     xpAdd,
-    newSuperUser
+    newSuperUser,
+    formatTime,
+    addVoiceChatTime
 }
-//these were here for debugging purposes, leaving them commented here bc why not, might help you
-//learn how this works.
+
 
 
 
