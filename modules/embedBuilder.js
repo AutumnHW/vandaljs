@@ -46,7 +46,7 @@ class PrEmbed {
                     inline: false
                 },
                 {
-                    name: "Hours spent in VC:",
+                    name: "Time spent in VC:",
                     value: String(userData.formatTime(hvc)),
                     inline: false
                 }
