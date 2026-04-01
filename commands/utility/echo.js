@@ -4,8 +4,8 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('echo')
         .setDescription('Echos a supplied message to a specified channel')
-        .addStringOption((option) => option.setName('input').setDescription('The message you want to send'))
-	    .addChannelOption((option) => option.setName('channel').setDescription('The channel you want to send your message to')),
+        .addStringOption((option) => option.setName('input').setDescription('The message you want to send').setRequired(true))
+	    .addChannelOption((option) => option.setName('channel').setDescription('The channel you want to send your message to').setRequired(true)),
 
     async execute(interaction) {
         const message = interaction.options.getString('input');
