@@ -166,7 +166,7 @@ function addVoiceChatTime(userid, ms){
     const DataFile = JSON.parse(DataFileRaw);
     const existingTime = DataFile.data.hoursvc;
     xp = getUserData('xp', userid);
-    xptoadd = Math.ceil(((Math.random() * 200)+250)*(ms/3600000));
+    xptoadd = Math.ceil(((Math.random() * 200)+250)*hours);
     DataFile.data.hoursvc = existingTime + ms;
     DataFile.data.xp = xp + xptoadd;
     DataFile.data.level = levelFromXP(xp + xptoadd);
