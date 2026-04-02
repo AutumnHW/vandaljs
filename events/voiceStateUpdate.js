@@ -7,6 +7,7 @@ module.exports = {
         const userId = newState.id;
         const oldChannel = oldState.channel;
         const newChannel = newState.channel;
+        const currentLevel = userData.getUserData('level', message.author);
 
         // USER JOINS VC
         if (!oldChannel && newChannel) {
@@ -25,6 +26,17 @@ module.exports = {
             console.log(`${newState.member.user.tag} spent ${Math.floor(timeSpent/1000)} seconds in VC`);
 
             userData.addVoiceChatTime(userId, timeSpent)
+            newLevel = userData.getUserData('level', message.author)
+            if (newLevel > currentLevel && newLevel == 10) {
+            member.roles.add(sentinelRole);
+            outputChannel.send('User ' + pingObject + levelUpString + newLevel + levelUpStringSentinel);
+        } else if (newLevel > currentLevel && newLevel < 10) {
+            member.roles.remove(sentinelRole);
+            outputChannel.send('User ' + pingObject + levelUpString + newLevel);
+        }else if (newLevel > currentLevel && newLevel > 10) {
+            member.roles.add(sentinelRole);
+            outputChannel.send('User ' + pingObject + levelUpString + newLevel);
+        }
 
 
         }
@@ -43,6 +55,7 @@ module.exports = {
     
 
         }
+        
 
     },
 };

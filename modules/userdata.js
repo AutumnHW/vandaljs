@@ -161,10 +161,21 @@ function formatTime(ms) {
     return `${hours}h ${minutes}m ${seconds}s`;
 }
 function addVoiceChatTime(userid, ms){
+    const hours = Math.floor(ms / 3600000);
     const DataFileRaw = fs.readFileSync(getUserDataPath(userid));
     const DataFile = JSON.parse(DataFileRaw);
     const existingTime = DataFile.data.hoursvc;
+    xp = getUserData('xp', userid);
+    xptoadd = Math.ceil(((Math.random() * 200)+250)*(ms/3600000));
     DataFile.data.hoursvc = existingTime + ms;
+    DataFile.data.xp = xp + xptoadd;
+    DataFile.data.level = levelFromXP(xp + xptoadd);
+    if (levelFromXP(xp + xptoadd) < 10) {
+        DataFile.data.sentinel = 0
+
+    } else {
+        DataFile.data.sentinel = 1
+    }
     fs.writeFileSync(getUserDataPath(userid), JSON.stringify(DataFile, null, 2));
     console.log('added vctime ' + ms + ' to file ' + getUserDataPath(userid));
     console.log('reading back from file: ' + DataFile.data.hoursvc);
