@@ -8,7 +8,7 @@ module.exports = {
         const oldChannel = oldState.channel;
         const newChannel = newState.channel;
         const currentLevel = userData.getUserData('level', userId);
-
+        const outputChannel = client.channels.cache.get('1327755122960236636');
         // USER JOINS VC
         if (!oldChannel && newChannel) {
             voiceSessions.set(userId, Date.now());
