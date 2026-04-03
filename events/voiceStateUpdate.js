@@ -28,13 +28,13 @@ module.exports = {
             userData.addVoiceChatTime(userId, timeSpent)
             newLevel = userData.getUserData('level', userId)
             if (newLevel > currentLevel && newLevel == 10) {
-            member.roles.add(sentinelRole);
+            newState.member.roles.add(sentinelRole);
             outputChannel.send('User ' + pingObject + levelUpString + newLevel + levelUpStringSentinel);
         } else if (newLevel > currentLevel && newLevel < 10) {
-            member.roles.remove(sentinelRole);
+            newState.member.roles.remove(sentinelRole);
             outputChannel.send('User ' + pingObject + levelUpString + newLevel);
         }else if (newLevel > currentLevel && newLevel > 10) {
-            member.roles.add(sentinelRole);
+            newState.member.roles.add(sentinelRole);
             outputChannel.send('User ' + pingObject + levelUpString + newLevel);
         }
 
