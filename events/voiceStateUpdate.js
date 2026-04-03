@@ -1,9 +1,12 @@
-const { Events, ActivityType } = require('discord.js');
+const {Events, ActivityType } = require('discord.js');
 const userData = require(process.cwd() + '/modules/userdata.js')
 const voiceSessions = new Map();
 module.exports = {
     name: Events.VoiceStateUpdate,
     execute(oldState, newState) {
+        const client = newState.client;
+        const guild = newState.guild;
+        const sentinelRole = guild.roles.cache.get('1328727053859815439');
         const userId = newState.id;
         const oldChannel = oldState.channel;
         const newChannel = newState.channel;
